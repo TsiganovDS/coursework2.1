@@ -1,0 +1,74 @@
+[
+    {
+        "name": "Штукатур-маляр",
+        "published_at": "20.01.2025",
+        "city": "Новокузнецк",
+        "salary": {
+            "from": 0
+        },
+        "snippet": {
+            "requirement": "Опыт работы. Умение работать в команде."
+        },
+        "alternate_url": "https://hh.ru/vacancy/115901556"
+    },
+    {
+        "name": "Штукатур-маляр",
+        "published_at": "27.01.2025",
+        "city": "Новокузнецк",
+        "salary": {
+            "from": 65000
+        },
+        "snippet": {
+            "requirement": "Отличное знание всех технологических процессов. Ответственность."
+        },
+        "alternate_url": "https://hh.ru/vacancy/116313470"
+    },
+    {
+        "name": "Штукатур-маляр",
+        "published_at": "10.02.2025",
+        "city": "Новокузнецк",
+        "salary": {
+            "from": 58000
+        },
+        "snippet": {
+            "requirement": "Стаж работы от 1 года."
+        },
+        "alternate_url": "https://hh.ru/vacancy/116994670"
+    },
+    {
+        "name": "Штукатур-маляр",
+        "published_at": "16.01.2025",
+        "city": "Новокузнецк",
+        "salary": {
+            "from": 59000
+        },
+        "snippet": {
+            "requirement": "удостоверение <highlighttext>штукатура</highlighttext>-<highlighttext>маляра</highlighttext> от 3 р.. - опыт работы."
+        },
+        "alternate_url": "https://hh.ru/vacancy/115663608"
+    },
+    {
+        "name": "Штукатур-маляр",
+        "published_at": "16.01.2025",
+        "city": "Новокузнецк",
+        "salary": {
+            "from": 56500
+        },
+        "snippet": {
+            "requirement": "Опыт работы пo прoфeccии (paссмотрим бeз удocтoвepeния, обучeние зa счeт компaнии). Oбрaзованиe: cpеднее cпeциальное."
+        },
+        "alternate_url": "https://hh.ru/vacancy/109046580"
+    },
+    {
+        "name": "Штукатур-маляр",
+        "published_at": "04.02.2025",
+        "city": "Новокузнецк",
+        "salary": {
+            "from": 40000
+        },
+        "snippet": {
+            "requirement": "Опыт работы от 1 года."
+        },
+        "alternate_url": "https://hh.ru/vacancy/106940854"
+    }
+]

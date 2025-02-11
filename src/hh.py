@@ -1,10 +1,10 @@
+from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Any, Optional
 
 import requests
 
-from abc import ABC, abstractmethod
-
+from config import file_json
 from src.fileworker import FileWorker
 from src.vacancy import Vacancy
 
@@ -23,6 +23,8 @@ class AbstractJobAPI(ABC):
 
 
 class HHAPI(AbstractJobAPI):
+    """Класс для выполнения API запроса"""
+
     def __init__(self):
         self.url = "https://api.hh.ru/vacancies"
         self.headers = {"User-Agent": "Your User Agent"}
@@ -46,18 +48,35 @@ class HHAPI(AbstractJobAPI):
     def find_area_id(self, areas, city: str) -> Optional[Any]:
         """Получаем ID города"""
         for area in areas:
-            if isinstance(area, dict):  # Проверяем, что это словарь
+            if isinstance(area, dict):
                 if area["name"].lower() == city.lower():
                     return area["id"]
                 if area.get("areas"):
                     found_id = self.find_area_id(area["areas"], city)
-                    if found_id is not None:  # Проверяем на None
+                    if found_id is not None:
                         return found_id
         return None
 
-    def fetch_and_save_vacancies(self, keyword: str, city: str):
-        self.params["text"] = keyword
+    def get_valid_input(self):
+        """ВВод данных с клавиатуры"""
+        city = self.get_non_empty_input("Введите город: ")
+        keyword = self.get_non_empty_input("Введите вакансию: ")
+        return city, keyword
+
+    @staticmethod
+    def get_non_empty_input(prompt):
+        """Проверка вводимых данных на пустую строку"""
+        user_input = input(prompt).strip()
+        while not user_input:
+            print("Ошибка: Ввод не должен быть пустым. Попробуйте снова.")
+            user_input = input(prompt).strip()
+        return user_input
+
+    def fetch_and_save_vacancies(self):
+        """Получение вакансий по API-запросу с сайта hh.ru и сохранение их в json-файл"""
+        city, keyword = self.get_valid_input()
         self.params["area"] = self.get_area_id(city)
+        self.params["text"] = keyword
         found_vacancies = []
         while self.params["page"] < 20:
             response = requests.get(self.url, headers=self.headers, params=self.params)
@@ -84,9 +103,9 @@ class HHAPI(AbstractJobAPI):
                         published_at_raw = item.get("published_at", "")
                         if published_at_raw:
                             try:
-                                published_at = datetime.strptime(published_at_raw, "%Y-%m-%dT%H:%M:%S%z").strftime(
-                                    "%d.%m.%Y"
-                                )
+                                published_at = datetime.strptime(
+                                    published_at_raw, "%Y-%m-%dT%H:%M:%S%z"
+                                ).strftime("%d.%m.%Y")
                             except ValueError:
                                 published_at = None
                         else:
@@ -107,7 +126,7 @@ class HHAPI(AbstractJobAPI):
                 print(f"Ошибка запроса: {response.status_code}")
                 break
 
-        storage = FileWorker()
+        storage = FileWorker(file_json)
         storage.save(found_vacancies)
 
         if found_vacancies:
@@ -120,15 +139,3 @@ class HHAPI(AbstractJobAPI):
             print("Нет вакансий по запросу.")
 
         return found_vacancies
-
-    @staticmethod
-    def choice_2():
-        city = input("Город: ")
-        query = input("Вакансия: ")
-        hhapi_instance = HHAPI()
-        vacancies = hhapi_instance.fetch_and_save_vacancies(query, city)
-        if vacancies:
-            file_worker = FileWorker()
-            file_worker.save(vacancies)
-        Vacancy.function(vacancies)
-        Vacancy.filtered(vacancies)
